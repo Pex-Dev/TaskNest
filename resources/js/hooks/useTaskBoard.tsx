@@ -136,6 +136,30 @@ export function TaskBoardProvider({ children, initialBoards, initialBoard, local
 
         if (isLocal) {
             return new Promise<ResponseResult>((resolve) => {
+                //Validar localmente
+                const nameErrors = [];
+                const nameMin = validateLenght(name, 'nombre', 'min', 3);
+                const nameMax = validateLenght(name, 'nombre', 'max', 30);
+                if (nameMin) {
+                    nameErrors.push(nameMin);
+                }
+                if (nameMax) {
+                    nameErrors.push(nameMax);
+                }
+
+                if (nameErrors.length > 0) {
+                    setProcessing(false);
+                    return resolve({
+                        ok: false,
+                        errors: {
+                            message: nameErrors[0],
+                            errors: {
+                                name: nameErrors,
+                            },
+                        },
+                    });
+                }
+
                 const fakeId = Date.now();
                 const newTaskList: TaskListType = {
                     id: fakeId,
@@ -191,6 +215,53 @@ export function TaskBoardProvider({ children, initialBoards, initialBoard, local
 
         if (isLocal) {
             return new Promise<ResponseResult>((resolve) => {
+                //Validar localmente
+                const nameErrors = [];
+                const nameMin = validateLenght(updatedTaskList.name, 'nombre', 'min', 3);
+                const nameMax = validateLenght(updatedTaskList.name, 'nombre', 'max', 30);
+                if (nameMin) {
+                    nameErrors.push(nameMin);
+                }
+                if (nameMax) {
+                    nameErrors.push(nameMax);
+                }
+                if (nameErrors.length > 0) {
+                    setProcessing(false);
+                    return resolve({
+                        ok: false,
+                        errors: {
+                            message: nameErrors[0],
+                            errors: {
+                                name: nameErrors,
+                            },
+                        },
+                    });
+                }
+
+                if (updatedTaskList.description) {
+                    const descriptionErrors = [];
+                    const descriptionMin = validateLenght(updatedTaskList.description, 'descripción', 'min', 3);
+                    const descriptionMax = validateLenght(updatedTaskList.description, 'descripción', 'max', 200);
+                    if (descriptionMin) {
+                        descriptionErrors.push(descriptionMin);
+                    }
+                    if (descriptionMax) {
+                        descriptionErrors.push(descriptionMax);
+                    }
+                    if (descriptionErrors.length > 0) {
+                        setProcessing(false);
+                        return resolve({
+                            ok: false,
+                            errors: {
+                                message: descriptionErrors[0],
+                                errors: {
+                                    description: descriptionErrors,
+                                },
+                            },
+                        });
+                    }
+                }
+
                 //Obtener lista de tareas
                 let currentTaskLists: TaskListType[] = [...currentBoard.task_lists];
 
@@ -313,6 +384,28 @@ export function TaskBoardProvider({ children, initialBoards, initialBoard, local
         if (isLocal) {
             return new Promise<ResponseResult>((resolve) => {
                 setProcessing(false);
+
+                //Validar localmente
+                const titleErrors = [];
+                const titleMin = validateLenght(title, 'nombre', 'min', 3);
+                const titleMax = validateLenght(title, 'nombre', 'max', 30);
+                if (titleMin) {
+                    titleErrors.push(titleMin);
+                }
+                if (titleMax) {
+                    titleErrors.push(titleMax);
+                }
+                if (titleErrors.length > 0) {
+                    return resolve({
+                        ok: false,
+                        errors: {
+                            message: titleErrors[0],
+                            errors: {
+                                title: titleErrors,
+                            },
+                        },
+                    });
+                }
 
                 const fakeId = Date.now();
                 const newTask: TaskType = {
@@ -515,6 +608,21 @@ export function TaskBoardProvider({ children, initialBoards, initialBoard, local
                 task_lists: currentTaskLists,
             };
         });
+    };
+
+    const validateLenght = (value: string, label: string, operator: 'min' | 'max', lenght: number): null | string => {
+        if (operator === 'min') {
+            if (value.length < lenght) {
+                return `${label === 'descripción' ? 'La' : 'El'} ${label} debe tener mínimo ${lenght} caracteres`;
+            }
+        }
+        if (operator === 'max') {
+            if (value.length > lenght) {
+                return `${label === 'descripción' ? 'La' : 'El'} ${label} debe tener máximo ${lenght} caracteres`;
+            }
+        }
+
+        return null;
     };
 
     return (
