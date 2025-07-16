@@ -392,9 +392,11 @@ export function TaskBoardProvider({ children, initialBoards, initialBoard, local
                 if (titleMin) {
                     titleErrors.push(titleMin);
                 }
+
                 if (titleMax) {
                     titleErrors.push(titleMax);
                 }
+
                 if (titleErrors.length > 0) {
                     return resolve({
                         ok: false,
