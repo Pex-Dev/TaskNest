@@ -12,6 +12,8 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
     const { currentBoard, editBoard, deleteBoard, isLocal } = useTaskBoard();
     const ref = useRef<HTMLDivElement>(null);
 
+    const currentUrl = window.location.pathname;
+
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -110,7 +112,7 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
         <header className="flex h-16 shrink-0 items-center gap-2 border-b border-sidebar-border/50 px-6 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 md:px-4">
             <div className="flex w-full items-center gap-2">
                 {isMobile && <SidebarTrigger className="-ml-1" />}
-                {currentBoard && (
+                {currentBoard ? (
                     <div className="relative flex w-full items-center justify-between md:flex-row md:gap-2">
                         <h2 className="text-lg lg:text-xl">{currentBoard.name}</h2>
                         {!isLocal && (
@@ -178,6 +180,8 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                             </>
                         )}
                     </div>
+                ) : (
+                    <h2 className="text-lg text-neutral-500 dark:text-neutral-600">{currentUrl === '/' ? 'Selecciona un tabero' : ''} </h2>
                 )}
             </div>
         </header>
