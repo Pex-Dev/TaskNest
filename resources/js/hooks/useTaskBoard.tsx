@@ -388,7 +388,7 @@ export function TaskBoardProvider({ children, initialBoards, initialBoard, local
                 //Validar localmente
                 const titleErrors = [];
                 const titleMin = validateLenght(title, 'nombre', 'min', 3);
-                const titleMax = validateLenght(title, 'nombre', 'max', 30);
+                const titleMax = validateLenght(title, 'nombre', 'max', 100);
                 if (titleMin) {
                     titleErrors.push(titleMin);
                 }

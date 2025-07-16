@@ -38,7 +38,7 @@ class TaskController extends Controller
         ],[
             'title.required' => 'El título es obligatorio',
             'title.min' => 'El título debe tener mínimo 3 caracteres',
-            'title.max' => 'El título debe tener máximo 50 caracteres',
+            'title.max' => 'El título debe tener máximo 100 caracteres',
         ]);
 
         $task = Task::create([
