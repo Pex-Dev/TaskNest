@@ -1,5 +1,14 @@
 import { NavUser } from '@/components/nav-user';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    useSidebar,
+} from '@/components/ui/sidebar';
 import { useTaskBoard } from '@/hooks/useTaskBoard';
 import { ApiErrorResponse, ResponseResult, SharedData, type NavItem } from '@/types';
 import { Link, router, usePage } from '@inertiajs/react';
@@ -36,7 +45,10 @@ export function AppSidebar() {
 
     const { boards, currentBoard, addBoard, isLocal } = useTaskBoard();
 
+    const { setOpenMobile } = useSidebar();
+
     const showAlert = () => {
+        setOpenMobile(false);
         withReactContent(Swal)
             .fire({
                 title: 'Ingresa el nombre de tu tablero',
