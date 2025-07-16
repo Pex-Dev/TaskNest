@@ -34,7 +34,7 @@ class TaskController extends Controller
 
         //Validar task
         $request -> validate([
-            'title' => 'required|min:3|max:50'
+            'title' => 'required|min:3|max:100'
         ],[
             'title.required' => 'El título es obligatorio',
             'title.min' => 'El título debe tener mínimo 3 caracteres',
